@@ -6,11 +6,11 @@ import (
 )
 
 type MongoServerConfig struct {
-	URL              string        `json:"url"`
-	AuthDatabaseName string        `json:"authDatabaseName"`
-	User             string        `json:"user"`
-	Password         string        `json:"password"`
-	DatabaseName     string        `json:"dataBaseName"`
+	Servers          string `json:"url"`
+	AuthDatabaseName string `json:"authDatabaseName"`
+	User             string `json:"user"`
+	Password         string `json:"password"`
+	DatabaseName     string `json:"dataBaseName"`
 }
 
 type DB struct {
@@ -20,7 +20,7 @@ type DB struct {
 func NewDB(configuration MongoServerConfig) (*DB, error) {
 
 	mongoDBDialInfo := &mgo.DialInfo{
-		Addrs:    []string{configuration.URL},
+		Addrs:    []string{configuration.Servers},
 		Timeout:  60 * time.Second,
 		Database: configuration.AuthDatabaseName,
 		Username: configuration.User,
@@ -35,7 +35,7 @@ func NewDB(configuration MongoServerConfig) (*DB, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &DB{Session:session}, nil
+	return &DB{Session: session}, nil
 }
 
 func (db *DB) Close() {
